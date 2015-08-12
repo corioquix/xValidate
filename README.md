@@ -56,3 +56,5 @@ xValidate.tryArray({
     console.log('{"fields": "valid"}');
   }
 });
+```
+[See example](http://jsfiddle.net/7q750av3/])
