@@ -38,7 +38,7 @@ var xValidate = {
         c.style["background-color"] = this.conf.onErrorColor;
         return 102
     },
-    "try": function(b) {
+    try: function(b) {
         var c;
         switch (b.type) {
             case "text":
