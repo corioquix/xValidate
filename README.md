@@ -27,7 +27,7 @@ Validate a field unique.
 // some input type email with id#mail
 xValidate.try({
   element: '#mail',
-  type: 'text',
+  type: 'email',
   onSuccess: function(){
     console.log('{"field": "valid"}');
   }
