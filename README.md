@@ -1,5 +1,5 @@
 # xValidate
-####[ Version: 2.1, License: MIT License ]
+####[ Version: 2.2, License: MIT License ]
 It is a small script in JavaScript to validate forms and his events.
 To include xValidate you only need to call external code file. With xValidate you can validate different types [text, number, email, date and url].
 
@@ -19,6 +19,29 @@ xValidate.options({
   urlError: 'Web link error'
 });
 ```
+##.required() Event
+Validate multiple fields, with the same parent container and using the tag "data-required"
+```html
+  <!-- The attr data-required receives its type -->
+  <form id="f_parent">
+    <input type="text" data-required="text" value="Juan" />
+    <input type="number"data-required="number" value="26" />
+    <input type="email" data-required="email" value="juan@mail.com" />
+  </form>
+```
+```javascript
+xValidate.required({
+    parentId: 'f_parent',
+    onSuccess: function(e){
+      //is received parameter(e) with an array of field values
+      console.log(e); //["Juan", "26", "juan@mail.com"]
+      console.log("Name: "+e[0]+", age: "+e[1]+", email: "+e[2]);
+      //Name: Juan, age: 26, email: juan@mail.com
+    }
+  });
+```
+[See example](https://jsfiddle.net/upvqpa7c/)
+
 ##.try() Event
 
 Validate a field unique.
@@ -57,4 +80,4 @@ xValidate.tryArray({
   }
 });
 ```
-[See example](http://jsfiddle.net/7q750av3/])
+[See example](http://jsfiddle.net/7q750av3/)
