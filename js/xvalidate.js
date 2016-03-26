@@ -1,8 +1,8 @@
 /*
     * xValidate is open sourced under the MIT license.
-    * 2015 Josue Marin - josue.marin.ch@gmail.com
+    * 2015-2016 Josue Marin - josue.marin.ch@gmail.com
     * http://github.com/corioquix
-    * v.2.1
+    * v.2.2
 */
 
 var xValidate = {
@@ -31,14 +31,15 @@ var xValidate = {
         this.conf.urlError = b.urlError || this.conf.urlError
     },
     onValidate: function(b) {
-        var c = document.querySelector(b.element);
-        if (c.value.match(b.type) && "" != c.value) return c.style["background-color"] = this.conf.onSuccessColor, 101;
+        var c = "object" == typeof b.element ? b.element : document.querySelector(b.element);
+        if (c.value.match(b.type) && "" != c.value) return c.style["background-color"] = this.conf.onSuccessColor,
+            101;
         alert(b.men);
         c.focus();
         c.style["background-color"] = this.conf.onErrorColor;
         return 102
     },
-    try: function(b) {
+    "try": function(b) {
         var c;
         switch (b.type) {
             case "text":
@@ -99,11 +100,12 @@ var xValidate = {
                 });
                 break;
             case "number":
-                d += this.onValidate({
-                    element: b.elemArray[a],
-                    type: this.conf.number,
-                    men: this.conf.numberError
-                });
+                d +=
+                    this.onValidate({
+                        element: b.elemArray[a],
+                        type: this.conf.number,
+                        men: this.conf.numberError
+                    });
                 break;
             case "date":
                 d += this.onValidate({
@@ -124,5 +126,54 @@ var xValidate = {
         }
         c = b.elemArray.length;
         if (d == 101 * c) b.onSuccess()
+    },
+    required: function(b) {
+        var c = document.querySelectorAll("[data-required]"),
+            d = 0,
+            f = 0,
+            g = [];
+        if (1 < c.length)
+            for (var e =
+                    0; e < c.length; e++)
+                if (c[e].getAttribute("data-required") && c[e].parentNode.id == b.parentId) switch (f++, g.push(c[e].value), c[e].getAttribute("data-required")) {
+                    case "text":
+                        d += this.onValidate({
+                            element: c[e],
+                            type: this.conf.text,
+                            men: this.conf.textError
+                        });
+                        break;
+                    case "email":
+                        d += this.onValidate({
+                            element: c[e],
+                            type: this.conf.email,
+                            men: this.conf.emailError
+                        });
+                        break;
+                    case "number":
+                        d += this.onValidate({
+                            element: c[e],
+                            type: this.conf.number,
+                            men: this.conf.numberError
+                        });
+                        break;
+                    case "date":
+                        d += this.onValidate({
+                            element: c[e],
+                            type: this.conf.date,
+                            men: _opt["this"].conf.dateError
+                        });
+                        break;
+                    case "url":
+                        d += this.onValidate({
+                            element: c[e],
+                            type: this.conf.url,
+                            men: this.conf.urlError
+                        });
+                        break;
+                    default:
+                        console.warn(".required()-> data tag error type")
+                }
+                if (d == 101 * f) b.onSuccess(g)
     }
 };
